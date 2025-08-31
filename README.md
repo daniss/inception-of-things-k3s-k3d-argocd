@@ -1,6 +1,5 @@
 # Inception‑of‑Things — K3s/K3d + Argo CD GitOps Lab
 
-EN — One‑liner
 From K3s on Vagrant (controller/worker, Ingress with host‑based routing) to K3d with Argo CD GitOps auto‑deploy (v1→v2), fully scripted and reproducible.
 
 ## Structure
