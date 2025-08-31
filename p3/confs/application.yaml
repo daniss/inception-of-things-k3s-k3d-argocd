@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-app
+  namespace: argocd
+spec: # Application specification
+  project: default # Project name in ArgoCD
+  source: # Source repository where the manifests are stored
+    repoURL: https://github.com/daniss/dcindrak.git
+    targetRevision: HEAD # Branch name of the git repository
+    path: app # Path to the k8s manifests in the git repository
+  destination: # Destination cluster where the manifests are applied
+    server: https://kubernetes.default.svc # Kubernetes API server
+    namespace: dev # Namespace in the Kubernetes cluster
+  syncPolicy:
+    automated: # Automated sync policy
+      prune: true # Prune resources automatically remove from Git not used in the cluster
+      selfHeal: true # Self-heal resources automatically correct the cluster state

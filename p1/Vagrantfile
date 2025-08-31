@@ -1,0 +1,37 @@
+Vagrant.configure("2") do |config|
+  # Every Vagrant development environment requires a box. You can search for
+  # boxes at https://vagrantcloud.com/search.
+  config.vm.box = "debian/bookworm64"
+  config.vm.synced_folder "./shared", "/vagrant/shared"
+
+
+# K3s determines whether a node should act as a controller (control plane) or an agent (worker) based on the arguments passed during installation. Here's how it works:
+# without K3S_URL it install in controller mode by default
+# with K3S_URL it install in agent mode
+# but it can be specify with --servier and --agent arguments
+
+# private_network: This is a private network that is only accessible from the host machine. The IP addresses are only accessible from the host machine and the virtual machines.
+
+# the controller mode of k3s is the one that will be responsible for the management of the cluster, the orchestration of the workloads and the scheduling of the workloads
+  config.vm.define "wlalaouiS" do |control|
+    control.vm.hostname = "wlalaouiS"
+    control.vm.network "private_network", ip: "192.168.56.110"
+    control.vm.provider "virtualbox" do |vb|
+        vb.memory = "1024"
+        vb.cpus = 1
+    end
+    control.vm.provision "shell", path: "./scripts/server_script.sh"
+  end
+
+# the worker mode of k3s is the one that will be responsible for the execution of the workloads
+  config.vm.define "wlalaouiSW" do |worker|
+    worker.vm.hostname = "wlalaouiSW"
+    worker.vm.network "private_network", ip: "192.168.56.111"
+    worker.vm.provider "virtualbox" do |vb|
+        vb.memory = "1024"
+        vb.cpus = 1
+    end
+    worker.vm.provision "shell", path: "./scripts/agent_script.sh"
+  end
+
+end
